@@ -46,7 +46,10 @@ target.z = -0.001
 
 arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.016)
 arrow.collider = "box"
-arrow.rotation_z = 90
+arrow.rotation_z = 0
+arrow.x = -0.8
+arrow.y = -0.2
+
 
 ground = Sprite(model = Quad, color = color.rgb(0,255,0), scale = (15,1.5))
 ground.y = -3.6
@@ -59,29 +62,20 @@ target.enabled = False
 light = PointLight(y=2, z=-3, shadows=True, color = color.rgb(300,300,300))
 
 def move_towards_mouse(sprite, amount):
-  '''
-  obj_x = sprite.x
-  obj_y = sprite.y
-  mouse_x = mouse.x
-  mouse_y = mouse.y
-  delta_y = abs(mouse_y - obj_y)
-  delta_x = abs(mouse_x - obj_x)
+  
+  
+  delta_y = mouse.y - sprite.y
+  delta_x = mouse.x - sprite.x
   
   if delta_x == 0 or delta_y == 0:
     delta_x = 0.00000000000001
     delta_y = 0.00000000000001 
-    
-  slope = delta_y/delta_x
-  obj_x 
-  print(slope)
-  sprite.x = delta_x / 1.2
-  sprite.y = delta_y / 1.2 
-  '''
-  print(mouse.x)
-  print(mouse.y)
 
-  arrow.position = mouse.position
   
+  sprite.x += delta_x /100*amount
+  sprite.y += delta_y /100*amount
+  
+
 
 def update():
   global frame_count
@@ -93,21 +87,21 @@ def update():
     start.model = "assets/button2.obj"
     game_start = False
     game_forever = True
+    light.color = color.rgb(450,450,450)
     
   elif game_forever == True:
     frame_count += 1 * time.dt
     if frame_count > 0.5:
       #runs every frame after game start
 
-      move_towards_mouse(arrow, 0.1)
-      
+      if held_keys['left mouse']:
+        move_towards_mouse(arrow, 20)
+        
       archer.enabled = True
       ground.enabled = True
       target.enabled = True
       start.enabled = False
       title.enabled = False
-
-      light.color = color.rgb(450,450,450)
 
       archer.y -= 5 * time.dt
       if archer.intersects(ground).hit:
