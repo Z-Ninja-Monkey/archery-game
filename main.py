@@ -44,7 +44,7 @@ target.x = 5
 target.y = -2.3
 target.z = -0.001
 
-arrow = Sprite(texture = arrow_ico, scale = 0.1)
+arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.016)
 arrow.collider = "box"
 arrow.rotation_z = 90
 
@@ -59,6 +59,7 @@ target.enabled = False
 light = PointLight(y=2, z=-3, shadows=True, color = color.rgb(300,300,300))
 
 def move_towards_mouse(sprite, amount):
+  '''
   obj_x = sprite.x
   obj_y = sprite.y
   mouse_x = mouse.x
@@ -68,13 +69,19 @@ def move_towards_mouse(sprite, amount):
   
   if delta_x == 0 or delta_y == 0:
     delta_x = 0.00000000000001
-    delta_y = 0.00000000000001
+    delta_y = 0.00000000000001 
     
   slope = delta_y/delta_x
   obj_x 
   print(slope)
   sprite.x = delta_x / 1.2
-  sprite.y = delta_y / 1.2
+  sprite.y = delta_y / 1.2 
+  '''
+  print(mouse.x)
+  print(mouse.y)
+
+  arrow.position = mouse.position
+  
 
 def update():
   global frame_count
