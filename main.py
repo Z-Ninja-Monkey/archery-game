@@ -61,17 +61,15 @@ target.enabled = False
 
 light = PointLight(y=2, z=-3, shadows=True, color = color.rgb(300,300,300))
 
-update_again = True
-def update_again_false():
-  update_again = False
+should_update_delta = True
 def move_towards_mouse(sprite, amount):
+  global should_update_delta
+  global delta_x
+  global delta_y
   
-  if update_again == True:
+  if should_update_delta == True:
     delta_y = mouse.y - sprite.y
     delta_x = mouse.x - sprite.x
-    print("This Ran")
-    update_again = False
-    print(update_again)
   
   if delta_x == 0 or delta_y == 0:
     delta_x = 0.00000000000001
@@ -81,10 +79,14 @@ def move_towards_mouse(sprite, amount):
   sprite.x += delta_x /100*amount
   sprite.y += delta_y /100*amount
   
+first_time = True
+
 def update():
   global frame_count
   global game_start
   global game_forever
+  global should_update_delta
+  global first_time
   
   if game_start == True:
     #runs once on game start
@@ -99,9 +101,14 @@ def update():
       #runs every frame after game start
 
       if held_keys['left mouse']:
-        move_towards_mouse(arrow, 20)
-      else:
-        update_again = True
+        if first_time == True:
+          should_update_delta = True
+          first_time = False
+        move_towards_mouse(arrow, 10)
+        should_update_delta = False
+
+      if not held_keys['left mouse']:
+        should_update_delta = True
         
       archer.enabled = True
       ground.enabled = True
