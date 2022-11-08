@@ -80,6 +80,7 @@ def move_towards_mouse(sprite, amount):
   sprite.y += delta_y /100*amount
   
 first_time = True
+gravity = 0
 
 def update():
   global frame_count
@@ -87,6 +88,7 @@ def update():
   global game_forever
   global should_update_delta
   global first_time
+  global gravity
   
   if game_start == True:
     #runs once on game start
@@ -104,11 +106,16 @@ def update():
         if first_time == True:
           should_update_delta = True
           first_time = False
+        gravity += 0.003
+        if gravity > 0.036:
+          gravity = 0.036
         move_towards_mouse(arrow, 10)
+        arrow.y -= gravity
         should_update_delta = False
 
       if not held_keys['left mouse']:
         should_update_delta = True
+        gravity = 0
         
       archer.enabled = True
       ground.enabled = True
@@ -119,10 +126,10 @@ def update():
       archer.y -= 5 * time.dt
       if archer.intersects(ground).hit:
         archer.y += 5 * time.dt
-
-      arrow.y -= 0 * time.dt
+        
       if arrow.intersects(ground).hit:
-        arrow.y += 5 * time.dt
+        arrow.enabled = False
+        print("this ran")
             
   else:
     #else
