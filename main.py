@@ -1,6 +1,6 @@
 from ursina import *
 import time
-#testingfgdjkhgdfg
+
 app = Ursina()
 
 window.title = 'archery game mabey'
