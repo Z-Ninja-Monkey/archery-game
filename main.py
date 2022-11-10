@@ -115,7 +115,7 @@ def update():
 
       if not held_keys['left mouse']:
         should_update_delta = True
-        gravity = 0
+        gravity = -0.015
         
       archer.enabled = True
       ground.enabled = True
