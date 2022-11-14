@@ -23,6 +23,7 @@ target_ico = "assets/archery_target.png"
 title_ico = "assets/archery.png"
 start_model = "assets/button.obj"
 start_texture = "assets/button.png"
+arrow_follower_ico = "arrow_follower.png"
 
 title = Sprite(texture = title_ico, scale = 2)
 title.y = 1.7
@@ -50,6 +51,7 @@ arrow.rotation_z = 0
 arrow.x = -0.8
 arrow.y = -0.2
 
+arrow_follower = Sprite(parent = camera.ui, texture = arrow_follower_ico)
 
 ground = Sprite(model = Quad, color = color.rgb(0,255,0), scale = (15,1.5))
 ground.y = -3.6
@@ -107,8 +109,6 @@ def update():
           should_update_delta = True
           first_time = False
         gravity += 0.003
-        if gravity > 0.036:
-          gravity = 0.036
         move_towards_mouse(arrow, 10)
         arrow.y -= gravity
         should_update_delta = False
