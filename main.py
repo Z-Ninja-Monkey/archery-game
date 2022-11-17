@@ -136,9 +136,6 @@ def update():
       archer.y -= 0.8 * time.dt
       if archer.intersects(ground).hit:
         archer.y += 0.8 * time.dt
-
-      if target.intersects(arrow_follower, debug=True).hit:
-        print("this will never run")
       
       if frozen == True:
         arrow.position = frozen_pos
