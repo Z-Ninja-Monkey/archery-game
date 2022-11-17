@@ -35,26 +35,28 @@ start.rotation_z = 180
 start.y = -2
 start.collider = "mesh"
 
-archer = Sprite(texture = archer_ico, scale = 0.6)
-archer.x = -5
-archer.y = 8
-archer.collider = BoxCollider(archer, center=Vec3(0,0,0), size=Vec3(0,0.78,0))
+archer = Sprite(parent = camera.ui,texture = archer_ico, scale = 0.07)
+archer.x = -0.8
+archer.y = 1.5
+archer.collider = BoxCollider(archer, center=Vec3(0,0.005,0), size=Vec3(0,0.78,0))
 
-target = Sprite(texture = target_ico, scale = 0.2)
-target.x = 5
-target.y = -2.3
-target.z = -0.001
+target = Sprite(parent = camera.ui,texture = target_ico, scale = 0.02)
+target.collider = BoxCollider(target, center=Vec3(-0.1,0,0), size=Vec3(0.6,0.9,1))  
+target.x = 0.8
+target.y = -0.34
+target.z = -0.00001
 
-arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.016)
+arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.01)
 arrow.collider = "box"
 arrow.rotation_z = 0
 arrow.x = -0.8
 arrow.y = -0.2
+arrow.z = -0.00002
 
 arrow_follower = Sprite(parent = camera.ui, texture = arrow_follower_ico)
 
-ground = Sprite(model = Quad, color = color.rgb(0,255,0), scale = (15,1.5))
-ground.y = -3.6
+ground = Sprite(parent = camera.ui,model = Quad, color = color.rgb(0,200,0), scale = (15,0.2))
+ground.y = -0.5
 ground.collider = "box"
 
 archer.enabled = False
@@ -83,6 +85,8 @@ def move_towards_mouse(sprite, amount):
   
 first_time = True
 gravity = 0
+frozen = False
+frozen_pos = None
 
 def update():
   global frame_count
@@ -91,6 +95,12 @@ def update():
   global should_update_delta
   global first_time
   global gravity
+  global frozen
+  global frozen_pos
+
+  if arrow.intersects(target).hit:
+    frozen = True
+    frozen_pos = arrow.position
   
   if game_start == True:
     #runs once on game start
@@ -123,13 +133,15 @@ def update():
       start.enabled = False
       title.enabled = False
 
-      archer.y -= 5 * time.dt
+      archer.y -= 0.8 * time.dt
       if archer.intersects(ground).hit:
-        archer.y += 5 * time.dt
-        
-      if arrow.intersects(ground).hit:
-        arrow.enabled = False
-        print("this ran")
+        archer.y += 0.8 * time.dt
+
+      if target.intersects(arrow_follower, debug=True).hit:
+        print("this will never run")
+      
+      if frozen == True:
+        arrow.position = frozen_pos
             
   else:
     #else
