@@ -9,6 +9,7 @@ window.fullscreen = False
 window.exit_button.visible = False
 window.fps_counter.enabled = False
 window.color = color.rgb(100,150,250)
+window.size = (1100,600)
 
 frame_count = 0
 game_start = False
@@ -18,7 +19,7 @@ def start_game():
   global game_start
   game_start = True
 
-archer_ico = "assets/frame0.png"
+archer_ico = "assets/frame4.png"
 arrow_ico = "assets/arrow.png"
 target_ico = "assets/archery_target.png"
 title_ico = "assets/archery.png"
@@ -51,8 +52,9 @@ arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.01)
 arrow.collider = "box"
 arrow.rotation_z = 0
 arrow.x = -0.8
-arrow.y = -0.2
+arrow.y = -0.25
 arrow.z = -0.00002
+arrow.enabled = False
 
 arrow_follower = Sprite(parent = camera.ui, texture = arrow_follower_ico)
 arrow_follower.x = arrow.x
@@ -96,8 +98,8 @@ def move_towards_mouse(sprite, amount):
     delta_x = 0.00000000000001
     delta_y = 0.00000000000001 
 
-  sprite.x += delta_x / 100 * amount
-  sprite.y += delta_y / 100 * amount
+  sprite.x += delta_x / 125 * amount
+  sprite.y += delta_y / 125 * amount
   
 first_time = True
 gravity = 0
@@ -150,12 +152,13 @@ def update():
         if first_time == True:
           should_update_delta = True
           first_time = False
+        arrow.enabled = True
         gravity += 0.003
         move_towards_mouse(arrow_follower, 1)
         move_towards_mouse(arrow_follower, 10)
         move_towards_mouse(arrow, 10)
         arrow.y -= gravity
-        arrow_follower.y -= gravity * 1.15
+        arrow_follower.y -= gravity * 1.25
         should_update_delta = False
 
       if not held_keys['left mouse']:
