@@ -39,7 +39,7 @@ start.collider = "mesh"
 
 archer = Sprite(parent = camera.ui,texture = archer_ico, scale = 0.07)
 archer.x = -0.8
-archer.y = 1.5
+archer.y = -0.22749391198158264
 archer.collider = BoxCollider(archer, center=Vec3(0,0.005,0), size=Vec3(0,0.78,0))
 
 target = Sprite(parent = camera.ui,texture = target_ico, scale = 0.02)
@@ -171,9 +171,6 @@ def update():
       start.enabled = False
       title.enabled = False
 
-      archer.y -= 0.8 * time.dt
-      if archer.intersects(ground).hit:
-        archer.y += 0.8 * time.dt
       
       if frozen == True:
         arrow.position = frozen_pos
