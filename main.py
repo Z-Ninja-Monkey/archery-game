@@ -124,6 +124,12 @@ def update():
   global check_mouse
 
   look_at(arrow, arrow_follower)
+
+  if arrow.x > -0.75 or arrow.y > -0.2:
+   
+   arrow.visible = True
+  else:
+    arrow.visible = False
     
   if arrow.intersects(target).hit or arrow.intersects(ground).hit:
     frozen = True
@@ -150,19 +156,17 @@ def update():
       
       if held_keys['left mouse']:
         if first_time == True:
+          arrow.enabled = True
           should_update_delta = True
           first_time = False
-        arrow.enabled = True
-        arrow.visible = False
-        
         gravity += 0.003
         move_towards_mouse(arrow_follower, 1)
         move_towards_mouse(arrow_follower, 10)
         move_towards_mouse(arrow, 10)
-        arrow.visible = True
         arrow.y -= gravity
         arrow_follower.y -= gravity * 1.25
         should_update_delta = False
+        
 
       if not held_keys['left mouse']:
         should_update_delta = True
