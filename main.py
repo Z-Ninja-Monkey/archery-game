@@ -153,10 +153,13 @@ def update():
           should_update_delta = True
           first_time = False
         arrow.enabled = True
+        arrow.visible = False
+        
         gravity += 0.003
         move_towards_mouse(arrow_follower, 1)
         move_towards_mouse(arrow_follower, 10)
         move_towards_mouse(arrow, 10)
+        arrow.visible = True
         arrow.y -= gravity
         arrow_follower.y -= gravity * 1.25
         should_update_delta = False
