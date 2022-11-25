@@ -1,4 +1,5 @@
 from ursina import *
+from random import *
 import time
 
 app = Ursina()
@@ -71,7 +72,7 @@ target.enabled = False
 
 light = PointLight(y=2, z=-3, shadows=True, color = color.rgb(300,300,300))
 
-
+landing_num = randint(80,90)
 def look_at(thing, looking_at):
   
   above = looking_at.y - thing.y
@@ -83,6 +84,11 @@ def look_at(thing, looking_at):
   
   
   thing.rotation_z = above/away * -40
+  print (thing.rotation_z)
+  if thing.rotation_z > 90:
+    thing.rotation_z  = landing_num
+  if thing.rotation_z < -90:
+    thing.rotation_z  = -90
   
 should_update_delta = True
 def move_towards_mouse(sprite, amount):
@@ -170,7 +176,7 @@ def update():
 
       if not held_keys['left mouse']:
         should_update_delta = True
-        gravity = -0.015
+        gravity = -0.02
         
       archer.enabled = True
       ground.enabled = True
