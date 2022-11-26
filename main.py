@@ -40,13 +40,14 @@ start.collider = "mesh"
 
 archer = Sprite(parent = camera.ui,texture = archer_ico, scale = 0.07)
 archer.x = -0.8
-archer.y = -0.22749391198158264
+archer.y = -0.25
+archer.z = -0.1
 archer.collider = BoxCollider(archer, center=Vec3(0,0.005,0), size=Vec3(0,0.78,0))
 
 target = Sprite(parent = camera.ui,texture = target_ico, scale = 0.02)
 target.collider = BoxCollider(target, center=Vec3(-0.1,0,0), size=Vec3(0.6,0.9,1))  
 target.x = 0.8
-target.y = -0.34
+target.y = -0.35
 target.z = -0.00001
 
 arrow = Sprite(parent = camera.ui, texture = arrow_ico, scale = 0.01)
@@ -66,8 +67,13 @@ ground = Sprite(parent = camera.ui,model = Quad, color = color.rgb(0,200,0), sca
 ground.y = -0.5
 ground.collider = "box"
 
+ground2 = Sprite(parent = camera.ui,model = Quad, color = color.rgb(0,200,0), scale = (15,0.2))
+ground2.z = -0.1
+ground2.y = -0.54
+
 archer.enabled = False
 ground.enabled = False
+ground2.enabled = False
 target.enabled = False
 
 light = PointLight(y=2, z=-3, shadows=True, color = color.rgb(300,300,300))
@@ -84,7 +90,6 @@ def look_at(thing, looking_at):
   
   
   thing.rotation_z = above/away * -40
-  print (thing.rotation_z)
   if thing.rotation_z > 90:
     thing.rotation_z  = landing_num
   if thing.rotation_z < -90:
@@ -136,8 +141,9 @@ def update():
    arrow.visible = True
   else:
     arrow.visible = False
-    
+
   if arrow.intersects(target).hit or arrow.intersects(ground).hit:
+    arrow.z = -0.00002
     frozen = True
     frozen_pos = arrow.position
     frozen_pos2 = arrow_follower.position
@@ -183,12 +189,11 @@ def update():
       target.enabled = True
       start.enabled = False
       title.enabled = False
-
+      ground2.enabled = True
       
       if frozen == True:
         arrow.position = frozen_pos
         arrow_follower.position = frozen_pos2
-            
   else:
     #else
     carson_sucks = True
