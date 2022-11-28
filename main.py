@@ -35,9 +35,9 @@ title = Sprite(texture=title_ico, scale=2)
 title.y = 1.7
 
 start = Entity(model=start_model,
-               texture=start_texture,
-               scale=0.7,
-               on_click=start_game)
+texture=start_texture,
+scale=0.7,
+on_click=start_game)
 start.rotation_x = 180
 start.rotation_y = 20
 start.rotation_z = 180
@@ -48,14 +48,10 @@ archer = Sprite(parent=camera.ui, texture=archer_ico, scale=0.07)
 archer.x = -0.8
 archer.y = -0.25
 archer.z = -0.1
-archer.collider = BoxCollider(archer,
-                              center=Vec3(0, 0.005, 0),
-                              size=Vec3(0, 0.78, 0))
+archer.collider = BoxCollider(archer,center=Vec3(0, 0.005, 0),size=Vec3(0, 0.78, 0))
 
 target = Sprite(parent=camera.ui, texture=target_ico, scale=0.02)
-target.collider = BoxCollider(target,
-                              center=Vec3(-0.1, 0, 0),
-                              size=Vec3(0.6, 0.9, 1))
+target.collider = BoxCollider(target,center=Vec3(-0.1, 0, 0),size=Vec3(0.6, 0.9, 1))
 target.x = 0.8
 target.y = -0.35
 target.z = -0.00001
@@ -73,17 +69,11 @@ arrow_follower.x = arrow.x
 arrow_follower.y = arrow.y
 arrow_follower.visible = False
 
-ground = Sprite(parent=camera.ui,
-                model=Quad,
-                color=color.rgb(0, 200, 0),
-                scale=(15, 0.2))
+ground = Sprite(parent=camera.ui,model=Quad,color=color.rgb(0, 200, 0),scale=(15, 0.2))
 ground.y = -0.5
 ground.collider = "box"
 
-ground2 = Sprite(parent=camera.ui,
-                 model=Quad,
-                 color=color.rgb(0, 200, 0),
-                 scale=(15, 0.2))
+ground2 = Sprite(parent=camera.ui,model=Quad,color=color.rgb(0, 200, 0),scale=(15, 0.2))
 ground2.z = -0.1
 ground2.y = -0.54
 
@@ -111,11 +101,11 @@ dot_stuff = 10
 def create_aimer():
     global dot_stuff
 
-    dot.position = Vec2(-0.8, -0.25)
-    dot2.position = Vec2(-0.8, -0.25)
-    dot3.position = Vec2(-0.8, -0.25)
-    dot4.position = Vec2(-0.8, -0.25)
-    dot5.position = Vec2(-0.8, -0.25)
+    dot.position = arrow.position
+    dot2.position = arrow.position
+    dot3.position = arrow.position
+    dot4.position = arrow.position
+    dot5.position = arrow.position
 
     move_towards_mouse(dot, 15, "none")
     move_towards_mouse(dot2, 35, "none")
@@ -156,7 +146,7 @@ def move_towards_mouse(sprite, amount, type):
     global should_update_delta
     global delta_x
     global delta_y
-
+  
     if should_update_delta == True:
         delta_y = mouse.y - sprite.y
         delta_x = mouse.x - sprite.x
@@ -164,10 +154,26 @@ def move_towards_mouse(sprite, amount, type):
     if delta_x == 0 or delta_y == 0:
         delta_x = 0.00000000000001
         delta_y = 0.00000000000001
-
+    
     stuff = delta_x / 100 * amount
-    if stuff > 0.07 and type == "arrow":
-        stuff = 0.05
+    if type == "none" and stuff > 0.8:
+      stuff = 1.2
+      dot.visible = False
+      dot2.visible = False
+      dot3.visible = False
+      dot4.visible = False
+      dot5.visible = False
+      held_keys['left mouse'] = False
+    else:
+      dot.visible = True
+      dot2.visible = True
+      dot3.visible = True
+      dot4.visible = True
+      dot5.visible = True
+    
+    if stuff > 0.08 and type == "arrow":
+        stuff = 0.075
+        print (stuff)
     sprite.x += stuff
     sprite.y += delta_y / 125 * amount
 
@@ -194,6 +200,7 @@ def update():
     global arrow_follower
     global mouse_click
     global check_mouse
+    hide_dots = False
 
     look_at(arrow, arrow_follower)
     create_aimer()
@@ -233,6 +240,7 @@ def update():
                     arrow.enabled = True
                     should_update_delta = True
                     first_time = False
+                hide_dots = True
                 gravity += 0.003
                 move_towards_mouse(arrow_follower, 1, "arrow")
                 move_towards_mouse(arrow_follower, 10, "arrow")
@@ -251,11 +259,18 @@ def update():
             start.enabled = False
             title.enabled = False
             ground2.enabled = True
-            dot.enabled = True
-            dot2.enabled = True
-            dot3.enabled = True
-            dot4.enabled = True
-            dot5.enabled = True
+            if hide_dots == False:
+              dot.enabled = True
+              dot2.enabled = True
+              dot3.enabled = True
+              dot4.enabled = True
+              dot5.enabled = True
+            else:
+              dot.enabled = False
+              dot2.enabled = False
+              dot3.enabled = False
+              dot4.enabled = False
+              dot5.enabled = False
 
             if frozen == True:
                 arrow.position = frozen_pos
