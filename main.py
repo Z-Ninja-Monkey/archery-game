@@ -34,10 +34,7 @@ dot_ico = "assets/dot.png"
 title = Sprite(texture=title_ico, scale=2)
 title.y = 1.7
 
-start = Entity(model=start_model,
-texture=start_texture,
-scale=0.7,
-on_click=start_game)
+start = Entity(model=start_model,texture=start_texture,scale=0.7,on_click=start_game)
 start.rotation_x = 180
 start.rotation_y = 20
 start.rotation_z = 180
