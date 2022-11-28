@@ -18,11 +18,10 @@ game_forever = False
 
 
 def start_game():
-    global game_start
-    game_start = True
+  global game_start
+  game_start = True
 
-
-archer_ico = "assets/frame4.png"
+archer_ico = "assets/archer.png"
 arrow_ico = "assets/arrow.png"
 target_ico = "assets/archery_target.png"
 title_ico = "assets/archery.png"
