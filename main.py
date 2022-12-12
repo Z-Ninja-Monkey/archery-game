@@ -7,7 +7,7 @@ app = Ursina()
 window.title = 'archery game mabey'
 window.borderless = False
 window.fullscreen = False
-window.exit_button.visible = False
+window.exit_button.visible = True
 window.fps_counter.enabled = False
 window.color = color.rgb(100, 150, 250)
 window.size = (1100, 600)
@@ -152,7 +152,7 @@ def move_towards_mouse(sprite, amount, type):
         delta_y = 0.00000000000001
     
     stuff = delta_x / 100 * amount
-    if type == "none" and stuff > 0.8:
+    if type == "none" and (stuff > 0.8 or stuff < 0):
       stuff = 1.2
       dot.visible = False
       dot2.visible = False
@@ -197,7 +197,7 @@ def update():
     global mouse_click
     global check_mouse
     hide_dots = False
-
+    
     look_at(arrow, arrow_follower)
     create_aimer()
 
