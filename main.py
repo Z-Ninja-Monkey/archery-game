@@ -21,9 +21,11 @@ def start_game():
   global game_start
   game_start = True
 
-archer_ico = "assets/archer.png"
+archer_ico = "assets/archer/archer.png"
 arrow_ico = "assets/arrow.png"
+bow_ico = "assets/archer/bow.png"
 target_ico = "assets/archery_target.png"
+extra = "assets/archer/animation help.png"
 title_ico = "assets/archery.png"
 start_model = "assets/button.obj"
 start_texture = "assets/button.png"
@@ -46,6 +48,13 @@ archer.y = -0.25
 archer.z = -0.1
 archer.collider = BoxCollider(archer,center=Vec3(0, 0.005, 0),size=Vec3(0, 0.78, 0))
 
+bow = Sprite(parent=camera.ui, texture=bow_ico, scale=0.07)
+bow.x = -0.8
+bow.y = -0.25
+bow.z = -0.2
+
+animation_help = Sprite(parent=camera.ui, texture=extra, scale=0.07)
+
 target = Sprite(parent=camera.ui, texture=target_ico, scale=0.02)
 target.collider = BoxCollider(target,center=Vec3(-0.1, 0, 0),size=Vec3(0.6, 0.9, 1))
 target.x = 0.8
@@ -56,7 +65,7 @@ arrow = Sprite(parent=camera.ui, texture=arrow_ico, scale=0.01)
 arrow.collider = "box"
 arrow.rotation_z = 0
 arrow.x = -0.8
-arrow.y = -0.25
+arrow.y = -0.2
 arrow.z = -0.00002
 arrow.enabled = False
 
@@ -97,17 +106,17 @@ dot_stuff = 10
 def create_aimer():
     global dot_stuff
 
-    dot.position = arrow.position
-    dot2.position = arrow.position
-    dot3.position = arrow.position
-    dot4.position = arrow.position
-    dot5.position = arrow.position
-
-    move_towards_mouse(dot, 15, "none")
-    move_towards_mouse(dot2, 35, "none")
-    move_towards_mouse(dot3, 57, "none")
-    move_towards_mouse(dot4, 80, "none")
-    move_towards_mouse(dot5, 100, "none")
+    dot.position = Vec2(arrow.x, arrow.y)
+    dot2.position = Vec2(arrow.x, arrow.y)
+    dot3.position = Vec2(arrow.x, arrow.y)
+    dot4.position = Vec2(arrow.x, arrow.y)
+    dot5.position = Vec2(arrow.x, arrow.y)
+    test = 0
+    move_towards_mouse(dot, 15 + test , "none")
+    move_towards_mouse(dot2, 35 + test, "none")
+    move_towards_mouse(dot3, 57 + test, "none")
+    move_towards_mouse(dot4, 80 + test, "none")
+    move_towards_mouse(dot5, 100 + test, "none")
 
     dot.y += 0.2 - 0.2
     dot2.y += 0.2 - 0.13
