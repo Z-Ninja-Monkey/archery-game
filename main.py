@@ -49,11 +49,14 @@ archer.z = -0.1
 archer.collider = BoxCollider(archer,center=Vec3(0, 0.005, 0),size=Vec3(0, 0.78, 0))
 
 bow = Sprite(parent=camera.ui, texture=bow_ico, scale=0.07)
-bow.x = -0.8
-bow.y = -0.25
+bow.x = -0.845
+bow.y = -0.17  
 bow.z = -0.2
 
 animation_help = Sprite(parent=camera.ui, texture=extra, scale=0.07)
+animation_help.x = -0.8
+animation_help.y = -0.25
+animation_help.z = -0.3
 
 target = Sprite(parent=camera.ui, texture=target_ico, scale=0.02)
 target.collider = BoxCollider(target,center=Vec3(-0.1, 0, 0),size=Vec3(0.6, 0.9, 1))
@@ -64,8 +67,8 @@ target.z = -0.00001
 arrow = Sprite(parent=camera.ui, texture=arrow_ico, scale=0.01)
 arrow.collider = "box"
 arrow.rotation_z = 0
-arrow.x = -0.8
-arrow.y = -0.2
+arrow.x = -0.75
+arrow.y = -0.15
 arrow.z = -0.00002
 arrow.enabled = False
 
@@ -110,19 +113,18 @@ def create_aimer():
     dot2.position = Vec2(arrow.x, arrow.y)
     dot3.position = Vec2(arrow.x, arrow.y)
     dot4.position = Vec2(arrow.x, arrow.y)
-    dot5.position = Vec2(arrow.x, arrow.y)
-    test = 0
+    dot5.position = Vec2(mouse.x, arrow.y)
+    test = 5
     move_towards_mouse(dot, 15 + test , "none")
     move_towards_mouse(dot2, 35 + test, "none")
     move_towards_mouse(dot3, 57 + test, "none")
     move_towards_mouse(dot4, 80 + test, "none")
-    move_towards_mouse(dot5, 100 + test, "none")
 
-    dot.y += 0.2 - 0.2
-    dot2.y += 0.2 - 0.13
-    dot3.y += 0.2 - 0.1
-    dot4.y += 0.2 - 0.11
-    dot5.y += 0.2 - 0.15
+    dot.y += 0
+    dot2.y += 0
+    dot3.y += 0
+    dot4.y += 0
+    dot5.y = mouse.y
 
 
 landing_num = randint(80, 90)
@@ -140,8 +142,8 @@ def look_at(thing, looking_at):
     thing.rotation_z = above / away * -40
     if thing.rotation_z > 90:
         thing.rotation_z = landing_num
-    if thing.rotation_z < -90:
-        thing.rotation_z = -90
+    if thing.rotation_z < -45:
+        thing.rotation_z = -45
 
 
 should_update_delta = True
@@ -161,6 +163,9 @@ def move_towards_mouse(sprite, amount, type):
         delta_y = 0.00000000000001
     
     stuff = delta_x / 100 * amount
+    if delta_y/delta_x > 1:
+        #dots shouldn't show
+        print('hola')
     if type == "none" and (stuff > 0.8 or stuff < 0):
       stuff = 1.2
       dot.visible = False
@@ -180,7 +185,9 @@ def move_towards_mouse(sprite, amount, type):
         stuff = 0.075
         print (stuff)
     sprite.x += stuff
-    sprite.y += delta_y / 125 * amount
+    if type == 'arrow':
+        sprite.y += delta_y / 125 * amount
+    else: sprite.y += delta_y / 100 * amount
 
 
 first_time = True
@@ -208,7 +215,10 @@ def update():
     hide_dots = False
     
     look_at(arrow, arrow_follower)
+    look_at(bow, dot3)
     create_aimer()
+    
+    bow.y = bow.rotation_z/1200-0.163
 
     if arrow.x > -0.75 or arrow.y > -0.2:
 
