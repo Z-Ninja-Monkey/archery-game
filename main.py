@@ -86,6 +86,8 @@ ground2.z = -0.1
 ground2.y = -0.54
 
 archer.enabled = False
+bow.enabled = False
+animation_help.enabled = False
 ground.enabled = False
 ground2.enabled = False
 target.enabled = False
@@ -109,21 +111,21 @@ dot_stuff = 10
 def create_aimer():
     global dot_stuff
 
-    dot.position = Vec2(arrow.x, arrow.y)
-    dot2.position = Vec2(arrow.x, arrow.y)
-    dot3.position = Vec2(arrow.x, arrow.y)
-    dot4.position = Vec2(arrow.x, arrow.y)
-    dot5.position = Vec2(mouse.x, arrow.y)
+    dot.position = Vec2(arrow.x, arrow.y +0.05)
+    dot2.position = Vec2(arrow.x, arrow.y +0.05)
+    dot3.position = Vec2(arrow.x, arrow.y +0.05)
+    dot4.position = Vec2(arrow.x, arrow.y +0.05)
+    dot5.position = Vec2(mouse.x, arrow.y +0.05)
     test = 5
     move_towards_mouse(dot, 15 + test , "none")
     move_towards_mouse(dot2, 35 + test, "none")
     move_towards_mouse(dot3, 57 + test, "none")
-    move_towards_mouse(dot4, 80 + test, "none")
+    move_towards_mouse(dot4, 77 + test, "none")
 
     dot.y += 0
-    dot2.y += 0
-    dot3.y += 0
-    dot4.y += 0
+    dot2.y += 0.056
+    dot3.y += 0.075
+    dot4.y += 0.05
     dot5.y = mouse.y
 
 
@@ -147,12 +149,13 @@ def look_at(thing, looking_at):
 
 
 should_update_delta = True
-
+hide_dots_global = False
 
 def move_towards_mouse(sprite, amount, type):
     global should_update_delta
     global delta_x
     global delta_y
+    global hide_dots_global
   
     if should_update_delta == True:
         delta_y = mouse.y - sprite.y
@@ -164,9 +167,10 @@ def move_towards_mouse(sprite, amount, type):
     
     stuff = delta_x / 100 * amount
     if delta_y/delta_x > 1:
-        #dots shouldn't show
-        print('hola')
-    if type == "none" and (stuff > 0.8 or stuff < 0):
+        hide_dots_global = True
+    else:
+        hide_dots_global = False
+    if type == "none" and (stuff > 0.55):
       stuff = 1.2
       dot.visible = False
       dot2.visible = False
@@ -180,7 +184,12 @@ def move_towards_mouse(sprite, amount, type):
       dot3.visible = True
       dot4.visible = True
       dot5.visible = True
-    
+    if stuff < 0.1:
+      dot.visible = False
+      dot2.visible = False
+      dot3.visible = False
+      dot4.visible = False
+      dot5.visible = False
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
         print (stuff)
@@ -193,10 +202,11 @@ def move_towards_mouse(sprite, amount, type):
 first_time = True
 gravity = 0
 frozen = False
-frozen_pos = None
+frozen_pos = None 
 frozen_pos2 = None
 check_mouse = False
 mouse_click = False
+bow_frozen = False
 
 
 def update():
@@ -212,11 +222,17 @@ def update():
     global arrow_follower
     global mouse_click
     global check_mouse
+    global bow_frozen
+    global hide_dots_global
+
     hide_dots = False
+    if hide_dots_global == True:
+        hide_dots = True
     
     look_at(arrow, arrow_follower)
-    look_at(bow, dot3)
     create_aimer()
+    if bow_frozen == False:
+        look_at(bow, dot2)
     
     bow.y = bow.rotation_z/1200-0.163
 
@@ -246,15 +262,17 @@ def update():
 
             if held_keys['left mouse']:
                 check_mouse = True
+                
 
             if check_mouse == True:
                 held_keys['left mouse'] = True
 
-            if held_keys['left mouse']:
+            if held_keys['left mouse'] and dot.visible == True:
                 if first_time == True:
                     arrow.enabled = True
                     should_update_delta = True
                     first_time = False
+                bow_frozen = True
                 hide_dots = True
                 gravity += 0.003
                 move_towards_mouse(arrow_follower, 1, "arrow")
@@ -269,6 +287,8 @@ def update():
                 gravity = -0.02
 
             archer.enabled = True
+            bow.enabled = True
+            animation_help.enabled = True
             ground.enabled = True
             target.enabled = True
             start.enabled = False
@@ -286,7 +306,7 @@ def update():
               dot3.enabled = False
               dot4.enabled = False
               dot5.enabled = False
-
+              
             if frozen == True:
                 arrow.position = frozen_pos
                 arrow_follower.position = frozen_pos2
