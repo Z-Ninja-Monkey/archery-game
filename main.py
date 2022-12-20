@@ -150,12 +150,14 @@ def look_at(thing, looking_at):
 
 should_update_delta = True
 hide_dots_global = False
+disable = False
 
 def move_towards_mouse(sprite, amount, type):
     global should_update_delta
     global delta_x
     global delta_y
     global hide_dots_global
+    global disable
   
     if should_update_delta == True:
         delta_y = mouse.y - sprite.y
@@ -171,25 +173,27 @@ def move_towards_mouse(sprite, amount, type):
     else:
         hide_dots_global = False
     if type == "none" and (stuff > 0.55):
-      stuff = 1.2
-      dot.visible = False
-      dot2.visible = False
-      dot3.visible = False
-      dot4.visible = False
-      dot5.visible = False
-      held_keys['left mouse'] = False
+        stuff = 1.2
+        dot.visible = False
+        dot2.visible = False
+        dot3.visible = False
+        dot4.visible = False
+        dot5.visible = False
+        held_keys['left mouse'] = False
     else:
-      dot.visible = True
-      dot2.visible = True
-      dot3.visible = True
-      dot4.visible = True
-      dot5.visible = True
+        dot.visible = True
+        dot2.visible = True
+        dot3.visible = True
+        dot4.visible = True
+        dot5.visible = True
     if stuff < 0.1:
-      dot.visible = False
-      dot2.visible = False
-      dot3.visible = False
-      dot4.visible = False
-      dot5.visible = False
+        dot.visible = False
+        dot2.visible = False
+        dot3.visible = False
+        dot4.visible = False
+        dot5.visible = False
+        disable = True
+
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
         print (stuff)
