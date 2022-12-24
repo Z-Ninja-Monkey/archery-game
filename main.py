@@ -106,6 +106,15 @@ dot5 = duplicate(dot)
 dot5.enabled = False
 
 dot_stuff = 10
+first_time = True
+gravity = 0
+frozen = False
+frozen_pos = None 
+frozen_pos2 = None
+check_mouse = False
+mouse_click = False
+bow_frozen = False
+disable = False
 
 
 def create_aimer():
@@ -123,9 +132,9 @@ def create_aimer():
     move_towards_mouse(dot4, 77 + test, "none")
 
     dot.y += 0
-    dot2.y += 0.056
-    dot3.y += 0.075
-    dot4.y += 0.05
+    dot2.y += 0.04
+    dot3.y += 0.05
+    dot4.y += 0.035
     dot5.y = mouse.y
 
 
@@ -150,13 +159,13 @@ def look_at(thing, looking_at):
 
 should_update_delta = True
 hide_dots_global = False
-disable = False
 
 def move_towards_mouse(sprite, amount, type):
     global should_update_delta
     global delta_x
     global delta_y
     global hide_dots_global
+    global check_mouse
     global disable
   
     if should_update_delta == True:
@@ -186,13 +195,18 @@ def move_towards_mouse(sprite, amount, type):
         dot3.visible = True
         dot4.visible = True
         dot5.visible = True
-    if stuff < 0.1:
+    if stuff < 0.1 and type == "none":
         dot.visible = False
         dot2.visible = False
         dot3.visible = False
         dot4.visible = False
         dot5.visible = False
         disable = True
+    else:
+        if held_keys['left mouse'] and stuff > 0.1 and type == "none":
+            disable = False
+            print("this ran")
+
 
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
@@ -201,16 +215,6 @@ def move_towards_mouse(sprite, amount, type):
     if type == 'arrow':
         sprite.y += delta_y / 125 * amount
     else: sprite.y += delta_y / 100 * amount
-
-
-first_time = True
-gravity = 0
-frozen = False
-frozen_pos = None 
-frozen_pos2 = None
-check_mouse = False
-mouse_click = False
-bow_frozen = False
 
 
 def update():
@@ -228,7 +232,9 @@ def update():
     global check_mouse
     global bow_frozen
     global hide_dots_global
+    global disable
 
+    print(disable)
     hide_dots = False
     if hide_dots_global == True:
         hide_dots = True
@@ -271,7 +277,7 @@ def update():
             if check_mouse == True:
                 held_keys['left mouse'] = True
 
-            if held_keys['left mouse'] and dot.visible == True:
+            if held_keys['left mouse'] and disable == False:
                 if first_time == True:
                     arrow.enabled = True
                     should_update_delta = True
@@ -317,6 +323,4 @@ def update():
     else:
         #else
         carson_sucks = True
-
-
 app.run()
