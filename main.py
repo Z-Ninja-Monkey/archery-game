@@ -183,33 +183,7 @@ def move_towards_mouse(sprite, amount, type):
         held_keys['left mouse'] = False
     else:
         hide_dots_global = False
-    '''
-    if type == "none" and (stuff > 0.55):
-        stuff = 1.2
-        dot.visible = False
-        dot2.visible = False
-        dot3.visible = False
-        dot4.visible = False
-        dot5.visible = False
-        held_keys['left mouse'] = False
-    elif stuff < 0.03 and type == "none":  
-        hide_dots_global = True
-        held_keys['left mouse'] = False
-        print('hi there')
-        print(dot.visible)
-    else:
-        dot.visible = True
-        dot2.visible = True
-        dot3.visible = True
-        dot4.visible = True
-        dot5.visible = True
-#   else:
-#       if held_keys['left mouse'] and type == "none":
-#          print(stuff)
-#          print("this ran")
-    '''
-
-
+        
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
         print (stuff)
