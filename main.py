@@ -115,6 +115,7 @@ check_mouse = False
 mouse_click = False
 bow_frozen = False
 disable = False
+arrow_hold_down = False
 
 
 def create_aimer():
@@ -177,10 +178,12 @@ def move_towards_mouse(sprite, amount, type):
         delta_y = 0.00000000000001
     
     stuff = delta_x / 100 * amount
-    if delta_y/delta_x > 1:
+    if delta_y/delta_x > 1 or stuff < 0.1 or stuff > 0.55:
         hide_dots_global = True
+        held_keys['left mouse'] = False
     else:
         hide_dots_global = False
+    '''
     if type == "none" and (stuff > 0.55):
         stuff = 1.2
         dot.visible = False
@@ -189,23 +192,22 @@ def move_towards_mouse(sprite, amount, type):
         dot4.visible = False
         dot5.visible = False
         held_keys['left mouse'] = False
+    elif stuff < 0.03 and type == "none":  
+        hide_dots_global = True
+        held_keys['left mouse'] = False
+        print('hi there')
+        print(dot.visible)
     else:
         dot.visible = True
         dot2.visible = True
         dot3.visible = True
         dot4.visible = True
         dot5.visible = True
-    if stuff < 0.1 and type == "none":
-        dot.visible = False
-        dot2.visible = False
-        dot3.visible = False
-        dot4.visible = False
-        dot5.visible = False
-        disable = True
-    else:
-        if held_keys['left mouse'] and stuff > 0.1 and type == "none":
-            disable = False
-            print("this ran")
+#   else:
+#       if held_keys['left mouse'] and type == "none":
+#          print(stuff)
+#          print("this ran")
+    '''
 
 
     if stuff > 0.08 and type == "arrow":
@@ -233,8 +235,8 @@ def update():
     global bow_frozen
     global hide_dots_global
     global disable
+    global arrow_hold_down
 
-    print(disable)
     hide_dots = False
     if hide_dots_global == True:
         hide_dots = True
@@ -275,9 +277,9 @@ def update():
                 
 
             if check_mouse == True:
-                held_keys['left mouse'] = True
+                arrow_hold_down = True
 
-            if held_keys['left mouse'] and disable == False:
+            if arrow_hold_down == True:
                 if first_time == True:
                     arrow.enabled = True
                     should_update_delta = True
@@ -292,7 +294,7 @@ def update():
                 arrow_follower.y -= gravity * 1.25
                 should_update_delta = False
 
-            if not held_keys['left mouse']:
+            if not arrow_hold_down:
                 should_update_delta = True
                 gravity = -0.02
 
@@ -320,6 +322,11 @@ def update():
             if frozen == True:
                 arrow.position = frozen_pos
                 arrow_follower.position = frozen_pos2
+
+            if bow.rotation_z > 0:
+                print(bow.y)
+                bow.rotation_z = 0
+                bow.y = -0.163
     else:
         #else
         carson_sucks = True
