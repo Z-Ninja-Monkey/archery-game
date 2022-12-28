@@ -182,14 +182,12 @@ def move_towards_mouse(sprite, amount, type):
     if (delta_y/delta_x > 1 or stuff < 0.1 or stuff > 0.55) and type == "none1":
         hide_dots_global = True
         held_keys['left mouse'] = False
-        print(hide_dots_global)
     else:
         hide_dots_global = False
 
         
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
-        print (stuff)
     sprite.x += stuff
     if type == 'arrow':
         sprite.y += delta_y / 125 * amount
@@ -215,7 +213,6 @@ def update():
     global arrow_hold_down
 
     hide_dots = False
-    print(str(hide_dots_global) + "hid")
     if hide_dots_global == True:
         hide_dots = True
     
@@ -285,7 +282,6 @@ def update():
             start.enabled = False
             title.enabled = False
             ground2.enabled = True
-            #print(str(hide_dots) + " hide dots")
             if hide_dots == False:
               dot.enabled = True
               dot2.enabled = True
@@ -304,7 +300,6 @@ def update():
                 arrow_follower.position = frozen_pos2
 
             if bow.rotation_z > 0:
-                print(bow.y)
                 bow.rotation_z = 0
                 bow.y = -0.163
     else:
