@@ -24,6 +24,7 @@ def start_game():
 archer_ico = "assets/archer/archer.png"
 arrow_ico = "assets/arrow.png"
 bow_ico = "assets/archer/bow.png"
+bow_released_ico = "assets/archer/bow_released.png"
 target_ico = "assets/archery_target.png"
 extra = "assets/archer/animation help.png"
 title_ico = "assets/archery.png"
@@ -130,7 +131,7 @@ def create_aimer():
     move_towards_mouse(dot, 15 + test , "none")
     move_towards_mouse(dot2, 35 + test, "none")
     move_towards_mouse(dot3, 57 + test, "none")
-    move_towards_mouse(dot4, 77 + test, "none")
+    move_towards_mouse(dot4, 77 + test, "none1")
 
     dot.y += 0
     dot2.y += 0.04
@@ -178,11 +179,13 @@ def move_towards_mouse(sprite, amount, type):
         delta_y = 0.00000000000001
     
     stuff = delta_x / 100 * amount
-    if delta_y/delta_x > 1 or stuff < 0.1 or stuff > 0.55:
+    if (delta_y/delta_x > 1 or stuff < 0.1 or stuff > 0.55) and type == "none1":
         hide_dots_global = True
         held_keys['left mouse'] = False
+        print(hide_dots_global)
     else:
         hide_dots_global = False
+
         
     if stuff > 0.08 and type == "arrow":
         stuff = 0.075
@@ -212,6 +215,7 @@ def update():
     global arrow_hold_down
 
     hide_dots = False
+    print(str(hide_dots_global) + "hid")
     if hide_dots_global == True:
         hide_dots = True
     
@@ -258,6 +262,7 @@ def update():
                     arrow.enabled = True
                     should_update_delta = True
                     first_time = False
+                bow.texture = bow_released_ico
                 bow_frozen = True
                 hide_dots = True
                 gravity += 0.003
@@ -280,6 +285,7 @@ def update():
             start.enabled = False
             title.enabled = False
             ground2.enabled = True
+            #print(str(hide_dots) + " hide dots")
             if hide_dots == False:
               dot.enabled = True
               dot2.enabled = True
